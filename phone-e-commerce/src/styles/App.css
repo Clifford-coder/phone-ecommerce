@@ -1,0 +1,82 @@
+:root {
+	/* create the variables for the colors */
+	--primaryDeep: #42045a;
+	--primaryLight: #9c53b9;
+	--primaryWhite: #f5f1f7;
+	--primaryBlack: #0e0113;
+	--primaryBlue: #0516ac;
+	--secondaryBlue: #4d5df1;
+	--primaryGrey: #474547;
+}
+
+body {
+	font-family: 'Montserrat', sans-serif !important;
+	background: var(--primaryWhite) !important;
+	font-weight: bold !important;
+}
+
+/* style for the titles */
+.text-title {
+	font-family: 'Roboto', sans-serif;
+	font-weight: 700;
+	letter-spacing: 0.3rem;
+	text-transform: uppercase;
+	display: inline-block;
+	background-image: linear-gradient(to right, var(--primaryDeep), var(--primaryLight));
+	color: transparent;
+	-webkit-background-clip: text;
+	letter-spacing: 0.2rem;
+	transition: all 0.2s;
+}
+
+.text-title:hover {
+	transform: skewY(1.5deg) skewX(-12deg) scale(1.07);
+	text-shadow: 0.5rem 1rem 2rem rgba(var(--primaryBlack), 0.4);
+}
+
+/* style for colored text */
+.text-deepVoilet {
+	color: var(--primaryDeep);
+}
+
+/* style for colored text */
+.text-deepVoilet {
+	color: var(--primaryLight);
+}
+
+.cus-nav-bg {
+	background-image: linear-gradient(to left, var(--primaryDeep), var(--primaryLight)) !important;
+	color: var(--primaryWhite);
+}
+
+.cus-card-footer-text {
+	font-family: 'Roboto', sans-serif;
+	font-weight: 700 !important;
+	letter-spacing: 0.3rem;
+	text-transform: uppercase;
+	display: inline-block;
+	background-image: linear-gradient(to right, var(--primaryDeep), var(--primaryLight));
+	color: transparent;
+	-webkit-background-clip: text;
+	letter-spacing: 0.1rem;
+}
+
+.btn-purple {
+	background: transparent;
+	text-transform: capitalize;
+	font-size: 0.8rem !important;
+	color: var(--primaryDeep);
+	border-radius: 0.02rem;
+	border: 0.1rem solid var(--primaryBlack) !important;
+}
+
+.btn-purple:hover {
+	background: var(--primaryDeep) !important;
+	color: var(--primaryWhite) !important;
+}
+
+.cus-trash-icon {
+	font-size: 1.2rem;
+	cursor: pointer;
+	color: rgb(185, 42, 42);
+}
