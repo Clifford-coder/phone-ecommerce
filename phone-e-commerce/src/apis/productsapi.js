@@ -1,3 +1,3 @@
 import axios from 'axios';
 
-export default axios.create({ baseURL: 'http://localhost:3004' });
+export default axios.create({ baseURL: 'https://heroku-phone-ecommece-demo.herokuapp.com' });
