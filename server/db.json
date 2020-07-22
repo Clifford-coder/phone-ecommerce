@@ -1,6 +1,5 @@
 {
-  "products": [
-    {
+  "products": [{
       "id": 1,
       "title": "Google Pixel - Black",
       "img": "img/product-1.png",
@@ -89,8 +88,7 @@
       "total": 2
     }
   ],
-  "carts": [
-    {
+  "carts": [{
       "id": 1,
       "title": "Google Pixel - Black",
       "img": "img/product-1.png",
