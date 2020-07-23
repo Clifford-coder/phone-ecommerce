@@ -3,13 +3,14 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { signIn, signOut } from '../store/actions/authAction';
 import { CusButton } from '../styles/StyledComps';
+import {GOOGLE_CLIENTID} from '../config';
 
 class GoogleAuth extends React.Component {
 	componentDidMount() {
 		window.gapi.load('client: auth2', () => {
 			window.gapi.client
 				.init({
-					clientId: '760114961786-497vqg3uj7r2o77ml8u9hk8vcsh2end0.apps.googleusercontent.com',
+					clientId:GOOGLE_CLIENTID ,
 					scope: 'email',
 				})
 				.then(() => {
