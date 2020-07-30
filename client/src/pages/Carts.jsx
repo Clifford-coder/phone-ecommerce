@@ -15,7 +15,7 @@ class Carts extends React.Component {
 	}
 
 	render() {
-		console.log(this.props.itemsInCart);
+		// console.log(this.props.itemsInCart);
 		if (!this.props.itemsInCart) {
 			return (
 				<div className="container">
@@ -25,7 +25,11 @@ class Carts extends React.Component {
 				</div>
 			);
 		} else if (this.props.itemsInCart.length === 0) {
-			return <EmptyCart />;
+			return (
+				<div className="container">
+					<EmptyCart />
+				</div>
+			);
 		}
 		return (
 			<div className="container">

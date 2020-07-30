@@ -48,6 +48,4 @@ const mapStateToProps = (state) => {
 	};
 };
 
-// export default Modal;
-
 export default connect(mapStateToProps, { fetchProducts })(Modal);

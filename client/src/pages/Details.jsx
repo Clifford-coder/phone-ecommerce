@@ -79,7 +79,7 @@ class Details extends React.Component {
 				</div>
 			);
 		}
-		console.log(this.props.currentUserId);
+		// console.log(this.props.currentUserId);
 		const { title, img, description, company, price, inCart } = this.props.product;
 
 		return (

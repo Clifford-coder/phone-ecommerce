@@ -6,8 +6,8 @@ import { CusButton } from '../../styles/StyledComps';
 
 function EmptyCart() {
 	return (
-		<div className="row m-lg-5">
-			<div className="text-center">
+		<div className="row m-lg-5 justify-content-center">
+			<div className="text-center ">
 				<Header classNamee="text-uppercase" name="Your Cart is currently empty" />
 				<h4 className="text-capitalize"> You can shop to add products to your cart</h4>
 				<Link to="/">
