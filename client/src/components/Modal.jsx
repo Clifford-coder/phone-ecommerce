@@ -7,7 +7,7 @@ import { fetchProducts } from '../store/actions/productActions';
 
 class Modal extends React.Component {
 	componentDidMount() {
-		this.props.fetchProducts();
+		// this.props.fetchProducts();
 	}
 
 	render() {
