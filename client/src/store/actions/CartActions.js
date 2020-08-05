@@ -6,11 +6,10 @@ export const getCart = () => {
 	return async (dispatch) => {
 		try {
 			const response = await productsapi.get('/carts');
-			const { message } = response.data;
-			cogoToast.success(message);
+			cogoToast.success('Done!!');
 			dispatch({ type: GET_CART, payload: response.data });
 		} catch (error) {
-			cogoToast.error(error.response.data.message);
+			cogoToast.error('Something went wrong!!');
 		}
 	};
 };
@@ -19,11 +18,10 @@ export const getCartInDB = (id) => {
 	return async (dispatch) => {
 		try {
 			const response = await productsapi.get(`/carts/${id}`);
-			const { message } = response.data;
-			cogoToast.success(message);
+			cogoToast.success('Done!!');
 			dispatch({ type: GET_CARTS_INDB, payload: response.data });
 		} catch (error) {
-			cogoToast.error(error.response.data.message);
+			cogoToast.error('Something went wrong!!');
 		}
 	};
 };
@@ -34,7 +32,7 @@ export const removeItemFromCart = (id) => {
 			await productsapi.delete(`carts/${id}`);
 			dispatch({ type: REMOVE_ITEM, payload: id });
 		} catch (error) {
-			cogoToast.error(error.response.data.message);
+			cogoToast.error('Something went wrong!!');
 		}
 	};
 };
@@ -43,11 +41,10 @@ export const patchInCartInCartDB = (id, editedInCart) => {
 	return async (dispatch) => {
 		try {
 			const response = await productsapi.patch(`/carts/${id}`, editedInCart);
-			const { message } = response.data;
-			cogoToast.success(message);
+			cogoToast.success('Done!!');
 			dispatch({ type: PATCH_INCART_CARTS, payload: response.data });
 		} catch (error) {
-			cogoToast.error(error.response.data.message);
+			cogoToast.error('Something went wrong!!');
 		}
 	};
 };

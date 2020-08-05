@@ -1,26 +1,33 @@
 import React from 'react';
 import _ from 'lodash';
 import { connect } from 'react-redux';
+
 import { fecthProduct, addProductToCart, patchInCartInProdDB } from '../store/actions/productActions';
 import { getCartInDB, getCart } from '../store/actions/CartActions';
 import { calculatePriceInCart } from '../store/actions/costAction';
 import Header from '../components/Header';
 import { Link } from 'react-router-dom';
 import { CusButton } from '../styles/StyledComps';
-import Modal from '../components/Modal';
+import asyncComponent from '../components/hoc/asyncComponent';
+
+//Load modal asynchronously i.e load it only when needed.
+const AsyncModalComponent = asyncComponent(() => import('../components/Modal'));
 
 class Details extends React.Component {
-	state = {
-		showModal: false,
-		id: null,
-	};
+	constructor(props) {
+		super(props);
+		this.state = {
+			showModal: false,
+			id: null,
+		};
+	}
 
 	componentDidMount() {
 		this.props.fecthProduct(this.props.match.params.id);
 		this.setState({ id: this.props.match.params.id });
 	}
 
-	onAddToCart = (product) => {
+	onAddToCart = () => {
 		let initialInCart = _.pick(this.props.product, 'inCart', 'count', 'total');
 		let initialValues = _.pick(
 			this.props.product,
@@ -50,6 +57,8 @@ class Details extends React.Component {
 		initialValues.inCart = true;
 		initialValues.count = 1;
 		initialValues.total = price;
+
+		this.setState({ id: id });
 
 		//check if user is signed in and the userId is equall to the currentUserId then perform these
 		this.props.addProductToCart(initialValues);
@@ -113,7 +122,7 @@ class Details extends React.Component {
 								cart
 								disabled={inCart ? true : false}
 								onClick={() => {
-									this.onAddToCart(this.props.product);
+									this.onAddToCart();
 									this.openModal();
 								}}
 							>
@@ -123,7 +132,11 @@ class Details extends React.Component {
 					</div>
 				</div>
 				{/* Modal */}
-				<Modal showModal={this.state.showModal} closeModal={this.closeModal} id={this.state.id} />
+				<AsyncModalComponent
+					showModal={this.state.showModal}
+					productId={this.state.id}
+					closeModal={this.closeModal}
+				/>
 			</div>
 		);
 	}

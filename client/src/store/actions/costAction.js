@@ -13,7 +13,7 @@ export const calculatePriceInCart = () => {
 			const totalCost = tax + subTotal;
 			dispatch({ type: CALCULATE_COST, payload: { subTotal, tax, totalCost } });
 		} catch (error) {
-			cogoToast.error(error.response.data.message);
+			cogoToast.error('Something went wrong!!');
 		}
 	};
 };

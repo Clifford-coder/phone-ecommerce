@@ -1,9 +1,13 @@
 import React from 'react';
 import { connect } from 'react-redux';
+
 import Product from './Product';
 import Header from '../Header';
 import { fetchProducts } from '../../store/actions/productActions';
-import Modal from '../Modal';
+import asyncComponent from '../hoc/asyncComponent';
+
+//Load modal asynchronously i.e load it only when needed.
+const AsyncModalComponent = asyncComponent(() => import('../Modal'));
 
 class ProductList extends React.Component {
 	state = {
@@ -35,6 +39,9 @@ class ProductList extends React.Component {
 
 	render() {
 		const PageHeading = 'OUR PRODUCTS';
+		if (!this.props.products) {
+			return <h1>No Products</h1>;
+		}
 		return (
 			<div className="container">
 				<div className="row">
@@ -43,7 +50,7 @@ class ProductList extends React.Component {
 				<div className="row">{this.renderList()}</div>
 				{/* Modal */}
 				<div>
-					<Modal
+					<AsyncModalComponent
 						products={this.props.products}
 						showModal={this.state.showModal}
 						closeModal={this.closeModal}
