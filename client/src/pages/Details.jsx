@@ -88,7 +88,6 @@ class Details extends React.Component {
 				</div>
 			);
 		}
-		// console.log(this.props.currentUserId);
 		const { title, img, description, company, price, inCart } = this.props.product;
 
 		return (
@@ -132,11 +131,14 @@ class Details extends React.Component {
 					</div>
 				</div>
 				{/* Modal */}
-				<AsyncModalComponent
-					showModal={this.state.showModal}
-					productId={this.state.id}
-					closeModal={this.closeModal}
-				/>
+				{this.state.id && (
+					<AsyncModalComponent
+						showModal={this.state.showModal}
+						productId={this.state.id}
+						closeModal={this.closeModal}
+						id={this.state.id}
+					/>
+				)}
 			</div>
 		);
 	}

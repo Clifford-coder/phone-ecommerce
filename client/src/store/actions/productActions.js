@@ -9,7 +9,7 @@ export const fetchProducts = () => {
 			cogoToast.success('Products were succesfully loaded!');
 			dispatch({ type: FETCH_PRODUCTS, payload: response.data });
 		} catch (error) {
-			cogoToast.error(error.response.data.message);
+			cogoToast.error('Something went wrong!!');
 		}
 	};
 };

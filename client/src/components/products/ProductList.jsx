@@ -42,6 +42,7 @@ class ProductList extends React.Component {
 		if (!this.props.products) {
 			return <h1>No Products</h1>;
 		}
+
 		return (
 			<div className="container">
 				<div className="row">
