@@ -1,18 +1,21 @@
 import React from 'react';
 import _ from 'lodash';
 import { Link } from 'react-router-dom';
-import { connect } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { removeItemFromCart } from '../../store/actions/CartActions';
 import { clearCost } from '../../store/actions/costAction';
 import { patchInCartInProdDB } from '../../store/actions/productActions';
 
-const CartTotals = (props) => {
+const CartTotals = ({ itemsInCart }) => {
+	const dispatch = useDispatch();
+	const cost = useSelector(({ cost }) => cost);
+
 	const clearCart = () => {
-		props.itemsInCart.map((obj) => {
-			let intialInCart = _.pick(obj, 'inCart');
+		itemsInCart.map((item) => {
+			let intialInCart = _.pick(item, 'inCart');
 			intialInCart.inCart = false;
-			props.patchInCartInProdDB(obj.id, intialInCart);
-			return props.removeItemFromCart(obj.id);
+			dispatch(patchInCartInProdDB(item.id, intialInCart));
+			return dispatch(removeItemFromCart(item.id));
 		});
 	};
 
@@ -26,7 +29,7 @@ const CartTotals = (props) => {
 								className="btn btn-outline-danger text-uppercase mb-3 px-5"
 								onClick={() => {
 									clearCart();
-									props.clearCost();
+									dispatch(clearCost());
 								}}
 							>
 								clear cart
@@ -35,15 +38,15 @@ const CartTotals = (props) => {
 						<div className="col-10 mt-2 ml-sm-5 ml-md-auto col-sm-8 text-capitalize text-right">
 							<h4 className="text-title">
 								<span>Total Tax : </span>
-								<strong>$ {props.cost.tax}</strong>
+								<strong>$ {cost.tax}</strong>
 							</h4>
 							<h4 className="text-title">
 								<span>Sub total: </span>
-								<strong>$ {props.cost.subTotal}</strong>
+								<strong>$ {cost.subTotal}</strong>
 							</h4>
 							<h4 className="text-title">
 								<span>Total Cost: </span>
-								<strong>$ {props.cost.totalCost}</strong>
+								<strong>$ {cost.totalCost}</strong>
 							</h4>
 						</div>
 					</div>
@@ -53,10 +56,4 @@ const CartTotals = (props) => {
 	);
 };
 
-const mapStateToProps = (state) => {
-	return {
-		cost: state.cost,
-	};
-};
-
-export default connect(mapStateToProps, { removeItemFromCart, clearCost, patchInCartInProdDB })(CartTotals);
+export default CartTotals;

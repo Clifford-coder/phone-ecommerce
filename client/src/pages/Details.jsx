@@ -1,9 +1,8 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import _ from 'lodash';
-import { connect } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { fecthProduct, addProductToCart, patchInCartInProdDB } from '../store/actions/productActions';
-import { getCartInDB, getCart } from '../store/actions/CartActions';
 import { calculatePriceInCart } from '../store/actions/costAction';
 import Header from '../components/Header';
 import { Link } from 'react-router-dom';
@@ -13,24 +12,25 @@ import asyncComponent from '../components/hoc/asyncComponent';
 //Load modal asynchronously i.e load it only when needed.
 const AsyncModalComponent = asyncComponent(() => import('../components/Modal'));
 
-class Details extends React.Component {
-	constructor(props) {
-		super(props);
-		this.state = {
-			showModal: false,
-			id: null,
-		};
-	}
+const Details = ({
+	match: {
+		params: { id },
+	},
+}) => {
+	const [showModal, setShowModal] = useState(false);
+	const dispatch = useDispatch();
+	const product = useSelector(({ products }) => products[id]);
+	// const currentUserId = useSelector(({auth})=> auth.userId)
+	// const isSignedIn = useSelector(({ auth }) => auth.isSignedIn);
 
-	componentDidMount() {
-		this.props.fecthProduct(this.props.match.params.id);
-		this.setState({ id: this.props.match.params.id });
-	}
+	useEffect(() => {
+		dispatch(fecthProduct(id));
+	}, [dispatch, id]);
 
-	onAddToCart = () => {
-		let initialInCart = _.pick(this.props.product, 'inCart', 'count', 'total');
+	const onAddToCart = () => {
+		let initialInCart = _.pick(product, 'inCart', 'count', 'total');
 		let initialValues = _.pick(
-			this.props.product,
+			product,
 			'id',
 			'title',
 			'img',
@@ -41,8 +41,7 @@ class Details extends React.Component {
 			'count',
 			'total'
 		);
-		const { title, img, price, company, description } = this.props.product;
-		const { id } = this.props.match.params;
+		const { title, img, price, company, description } = product;
 
 		initialInCart.inCart = true;
 		initialInCart.total = price;
@@ -58,106 +57,79 @@ class Details extends React.Component {
 		initialValues.count = 1;
 		initialValues.total = price;
 
-		this.setState({ id: id });
-
 		//check if user is signed in and the userId is equall to the currentUserId then perform these
-		this.props.addProductToCart(initialValues);
-		this.props.calculatePriceInCart();
-		this.props.patchInCartInProdDB(id, initialInCart);
+		dispatch(addProductToCart(initialValues));
+		dispatch(calculatePriceInCart());
+		dispatch(patchInCartInProdDB(id, initialInCart));
 
 		// else{
-		// 	//show a modal to tell the user to sign in
+		//show a modal to tell the user to sign in
 		// }
 	};
 
-	openModal = () => {
-		this.setState({ showModal: true, id: this.props.match.params.id });
+	const openModal = () => {
+		setShowModal(true);
 	};
 
-	closeModal = () => {
-		this.setState({ showModal: false });
+	const closeModal = () => {
+		setShowModal(false);
 	};
 
-	render() {
-		if (!this.props.product) {
-			return (
-				<div className="container">
-					<div className="col-10 mx-auto row">
-						<Header name="Loading..." />
-					</div>
-				</div>
-			);
-		}
-		const { title, img, description, company, price, inCart } = this.props.product;
-
+	if (!product) {
 		return (
 			<div className="container">
-				{/* Phone Title */}
-				<div className="row col-10 mx-auto">
-					<Header name={title} />
+				<div className="col-10 mx-auto row">
+					<Header name="Loading..." />
 				</div>
-				{/* Phone Details */}
-				<div className="row">
-					<div className="col-10 mx-auto col-md-6 my-3 text-capitalize">
-						<img src={img} className="img-fluid" alt={title} />
-					</div>
-					<div className="col-10 mx-auto col-md-6 my-3 text-capitalize">
-						<h2>Model : {title}</h2>
-						<h4 className="text-title text-uppercase mt-2 mb-2">
-							made by : <span>{company}</span>
-						</h4>
-						<h4 className="text-deepVoilet text-uppercase">
-							Price : <span>$</span>
-							{price}
-						</h4>
-						<p className="text-capitalize mt-2 mb-0 font-weight-bold">Some info about this product</p>
-						<p className="lead">{description}</p>
-						{/* buttons */}
-						<div>
-							<Link to="/" className="mr-2">
-								<CusButton>Back to Products</CusButton>
-							</Link>
-							<CusButton
-								cart
-								disabled={inCart ? true : false}
-								onClick={() => {
-									this.onAddToCart();
-									this.openModal();
-								}}
-							>
-								{inCart ? 'inCart' : 'Add to Cart'}
-							</CusButton>
-						</div>
-					</div>
-				</div>
-				{/* Modal */}
-				{this.state.id && (
-					<AsyncModalComponent
-						showModal={this.state.showModal}
-						productId={this.state.id}
-						closeModal={this.closeModal}
-						id={this.state.id}
-					/>
-				)}
 			</div>
 		);
 	}
-}
+	const { title, img, description, company, price, inCart } = product;
 
-const mapStateToProps = (state, ownProps) => {
-	const { userId, isSignedIn } = state.auth;
-	return {
-		product: state.products[ownProps.match.params.id],
-		currentUserId: userId,
-		isSignedIn: isSignedIn,
-	};
+	return (
+		<div className="container">
+			{/* Phone Title */}
+			<div className="row col-10 mx-auto">
+				<Header name={title} />
+			</div>
+			{/* Phone Details */}
+			<div className="row">
+				<div className="col-10 mx-auto col-md-6 my-3 text-capitalize">
+					<img src={img} className="img-fluid" alt={title} />
+				</div>
+				<div className="col-10 mx-auto col-md-6 my-3 text-capitalize">
+					<h2>Model : {title}</h2>
+					<h4 className="text-title text-uppercase mt-2 mb-2">
+						made by : <span>{company}</span>
+					</h4>
+					<h4 className="text-deepVoilet text-uppercase">
+						Price : <span>$</span>
+						{price}
+					</h4>
+					<p className="text-capitalize mt-2 mb-0 font-weight-bold">Some info about this product</p>
+					<p className="lead">{description}</p>
+					{/* buttons */}
+					<div>
+						<Link to="/" className="mr-2">
+							<CusButton>Back to Products</CusButton>
+						</Link>
+						<CusButton
+							cart
+							disabled={inCart ? true : false}
+							onClick={() => {
+								onAddToCart();
+								openModal();
+							}}
+						>
+							{inCart ? 'inCart' : 'Add to Cart'}
+						</CusButton>
+					</div>
+				</div>
+			</div>
+			{/* Modal */}
+			{id && <AsyncModalComponent showModal={showModal} closeModal={closeModal} id={id} />}
+		</div>
+	);
 };
 
-export default connect(mapStateToProps, {
-	fecthProduct,
-	addProductToCart,
-	getCartInDB,
-	patchInCartInProdDB,
-	getCart,
-	calculatePriceInCart,
-})(Details);
+export default Details;

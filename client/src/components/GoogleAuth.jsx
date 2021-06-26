@@ -1,16 +1,15 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { signIn, signOut } from '../store/actions/authAction';
 import { CusButton } from '../styles/StyledComps';
-import {GOOGLE_CLIENTID} from '../config';
+import { GOOGLE_CLIENTID } from '../config';
 
 class GoogleAuth extends React.Component {
 	componentDidMount() {
 		window.gapi.load('client: auth2', () => {
 			window.gapi.client
 				.init({
-					clientId:GOOGLE_CLIENTID ,
+					clientId: GOOGLE_CLIENTID,
 					scope: 'email',
 				})
 				.then(() => {
@@ -55,17 +54,6 @@ class GoogleAuth extends React.Component {
 						</span>
 						Sign Out
 					</CusButton>
-
-					<span className="ml-2">
-						<Link to="/carts">
-							<CusButton>
-								<span className="mr-2">
-									<i className="fa fa-shopping-cart"></i>
-								</span>
-								<span>My Carts</span>
-							</CusButton>
-						</Link>
-					</span>
 				</React.Fragment>
 			);
 		} else {

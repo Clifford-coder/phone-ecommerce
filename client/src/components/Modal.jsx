@@ -1,52 +1,45 @@
-import React from 'react';
-import { connect } from 'react-redux';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import { CusButton, ModalContainer } from '../styles/StyledComps';
 import { fecthProduct } from '../store/actions/productActions';
 
-class Modal extends React.Component {
-	async componentDidMount() {
-		await this.props.fecthProduct(this.props.id);
-	}
+const Modal = ({ id, showModal, closeModal }) => {
+	const dispatch = useDispatch();
+	const product = useSelector(({ products }) => products[id]);
 
-	render() {
-		if (!this.props.product && !this.props.id) {
-			return null;
-		} else {
-			const { title, img, price } = this.props.product;
-			console.log(this.props);
+	useEffect(() => {
+		dispatch(fecthProduct(id));
+	}, [dispatch, id]);
 
-			return this.props.showModal ? (
-				<ModalContainer>
-					<div className="container">
-						<div className="row">
-							<div id="modal" className="col-8 mx-auto col-md-6 col-lg-4 text-capitalize text-center p-5">
-								<h5 className="text-title">Item added to the cart</h5>
-								<img src={img} className="img-fluid" alt={title} />
-								<h5>{title}</h5>
-								<h5>Price : $ {price}</h5>
-								<Link to="/">
-									<CusButton onClick={() => this.props.closeModal()}>Buy More</CusButton>
-								</Link>
-								<Link to="/carts">
-									<CusButton cart className="ml-2" onClick={() => this.props.closeModal()}>
-										View Cart
-									</CusButton>
-								</Link>
-							</div>
+	if (!product && !id) {
+		return null;
+	} else {
+		const { title, img, price } = product;
+		return showModal ? (
+			<ModalContainer>
+				<div className="container">
+					<div className="row">
+						<div id="modal" className="col-8 mx-auto col-md-6 col-lg-4 text-capitalize text-center p-5">
+							<h5 className="text-title">Item added to the cart</h5>
+							<img src={img} className="img-fluid" alt={title} />
+							<h5>{title}</h5>
+							<h5>Price : $ {price}</h5>
+							<Link to="/">
+								<CusButton onClick={() => closeModal()}>Buy More</CusButton>
+							</Link>
+							<Link to="/carts">
+								<CusButton cart className="ml-2" onClick={() => closeModal()}>
+									View Cart
+								</CusButton>
+							</Link>
 						</div>
 					</div>
-				</ModalContainer>
-			) : null;
-		}
+				</div>
+			</ModalContainer>
+		) : null;
 	}
-}
-
-const mapStateToProps = (state, ownProps) => {
-	return {
-		product: state.products[ownProps.id],
-	};
 };
 
-export default connect(mapStateToProps, { fecthProduct })(Modal);
+export default Modal;
