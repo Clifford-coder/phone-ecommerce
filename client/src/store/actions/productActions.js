@@ -9,7 +9,7 @@ export const fetchProducts = () => {
 			cogoToast.success('Products were succesfully loaded!');
 			dispatch({ type: FETCH_PRODUCTS, payload: response.data });
 		} catch (error) {
-			cogoToast.error('Something went wrong!!');
+			console.log('errorrrrr ---', error);
 		}
 	};
 };
@@ -18,10 +18,9 @@ export const fecthProduct = (id) => {
 	return async (dispatch) => {
 		try {
 			const response = await productsapi.get(`/products/${id}`);
-			cogoToast.success('Done!!');
 			dispatch({ type: FETCH_PRODUCT, payload: response.data });
 		} catch (error) {
-			cogoToast.error('Something went wrong!!');
+			console.log('errorr ---- ', error);
 		}
 	};
 };
@@ -31,10 +30,9 @@ export const addProductToCart = (values) => {
 		try {
 			const { userId } = getState().auth;
 			const response = await productsapi.post('/carts', { ...values, userId });
-			cogoToast.success('Done!!');
 			dispatch({ type: ADD_TO_CART, payload: response.data });
 		} catch (error) {
-			cogoToast.error('Something went wrong!!');
+			console.log('errorr ---- ', error);
 		}
 	};
 };
@@ -43,10 +41,9 @@ export const patchInCartInProdDB = (id, editedInCart) => {
 	return async (dispatch) => {
 		try {
 			const response = await productsapi.patch(`/products/${id}`, editedInCart);
-			cogoToast.success('Done!!');
 			dispatch({ type: PATCH_INCART, payload: response.data });
 		} catch (error) {
-			cogoToast.error('Something went wrong!!');
+			console.log('errorr ---- ', error);
 		}
 	};
 };
