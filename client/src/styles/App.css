@@ -80,3 +80,10 @@ body {
 	cursor: pointer;
 	color: rgb(185, 42, 42);
 }
+
+.google-icon {
+	height: 25px;
+	width: 25px;
+	margin-right: 0px;
+	left: 30px;
+}

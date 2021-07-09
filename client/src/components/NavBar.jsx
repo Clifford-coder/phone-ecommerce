@@ -2,8 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import logo from '../logo.svg';
 import { CusButton } from '../styles/StyledComps';
-
-// import GoogleAuth from './GoogleAuth';
+import GoogleAuth from '../components/googleOAuth';
 
 // ALL CLASSNAMES STARTING WITH CUS IS MY OUR CUSTOM CSS NOT BOOTSTRAP
 const NavBar = () => (
@@ -22,8 +21,8 @@ const NavBar = () => (
 			</li>
 		</ul>
 		<div className="ml-auto d-flex">
-			{/* todo: Add <GoogleAuth /> */}
 			<span className="ml-2">
+				<GoogleAuth />
 				<Link to="/carts">
 					<CusButton>
 						<span className="mr-2">
