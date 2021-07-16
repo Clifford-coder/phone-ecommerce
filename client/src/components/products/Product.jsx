@@ -1,9 +1,9 @@
 import React from 'react';
 import _ from 'lodash';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
-
+import cogoToast from 'cogo-toast';
 import { ProductCardWrapper } from '../../styles/StyledComps';
 import {
   addProductToCart,
@@ -13,10 +13,11 @@ import { calculatePriceInCart } from '../../store/actions/costAction';
 
 const Product = ({ product, openModal }) => {
   const dispatch = useDispatch();
+  const user = useSelector(({ auth }) => auth.user);
 
   const onAddToCart = () => {
-    if (!product) {
-      return null;
+    if (!user) {
+      return cogoToast.error('Please Login first to add product to cart!');
     }
     let initialInCart = _.pick(product, 'inCart', 'count', 'total');
     let initialValues = _.pick(
@@ -55,7 +56,6 @@ const Product = ({ product, openModal }) => {
   const { title, img, inCart, price, id } = product;
   return (
     <>
-      {console.log('img source ---- ', img)}
       <ProductCardWrapper>
         <div className="card">
           <div className="cusImg-container p-5">

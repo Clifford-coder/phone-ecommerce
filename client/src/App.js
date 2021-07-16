@@ -8,10 +8,9 @@ import Carts from '../src/pages/Carts';
 import ProductDetails from '../src/pages/Details';
 import PageNotFound from '../src/pages/PageNotFound';
 import Navbar from '../src/components/NavBar';
+import PrivateRoute from './PrivateRoute';
 
 const App = () => {
-  //todo: add payment to the application.
-
   return (
     <React.Fragment>
       <BrowserRouter>
@@ -20,7 +19,7 @@ const App = () => {
         <Switch>
           <Route path="/" exact component={Home} />
           <Route path="/details/:id" exact component={ProductDetails} />
-          <Route path="/carts" exact component={Carts} />
+          <PrivateRoute path="/carts" exact component={Carts} />
           <Route path="*" component={PageNotFound} />
         </Switch>
       </BrowserRouter>

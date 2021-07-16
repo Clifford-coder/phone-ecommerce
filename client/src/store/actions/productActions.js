@@ -34,14 +34,13 @@ export const addProductToCart = (values) => {
   return async (dispatch, getState) => {
     try {
       const { user } = getState().auth;
-      console.log('user ----- ', user);
       const response = await productsapi.post('/carts', {
         ...values,
-        ...user.googleId,
+        userId: user?.googleId,
       });
       dispatch({ type: ADD_TO_CART, payload: response.data });
     } catch (error) {
-      console.log('errorr ---- ', error);
+      console.log('errorr in adding to cart ---- ', error);
     }
   };
 };

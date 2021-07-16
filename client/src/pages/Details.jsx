@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import _ from 'lodash';
 import { useDispatch, useSelector } from 'react-redux';
+import cogoToast from 'cogo-toast';
 
 import {
   fecthProduct,
@@ -24,12 +25,16 @@ const Details = ({
   const [showModal, setShowModal] = useState(false);
   const dispatch = useDispatch();
   const product = useSelector(({ products }) => products[id]);
+  const user = useSelector(({ auth }) => auth.user);
 
   useEffect(() => {
     dispatch(fecthProduct(id));
   }, [dispatch, id]);
 
   const onAddToCart = () => {
+    if (user === null) {
+      return cogoToast.error('Login to be able to add product to cart!');
+    }
     let initialInCart = _.pick(product, 'inCart', 'count', 'total');
     let initialValues = _.pick(
       product,
@@ -65,6 +70,7 @@ const Details = ({
   };
 
   const openModal = () => {
+    if (!user) return;
     setShowModal(true);
   };
 
@@ -85,7 +91,6 @@ const Details = ({
 
   return (
     <div className="container">
-      {console.log('img source ---- ', img)}
       {/* Phone Title */}
       <div className="row col-10 mx-auto">
         <Header name={title} />

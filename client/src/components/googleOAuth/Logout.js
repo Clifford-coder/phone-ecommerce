@@ -1,15 +1,36 @@
-import cogoToast from 'cogo-toast';
 import React from 'react';
-import { useDispatch } from 'react-redux';
+import cogoToast from 'cogo-toast';
+import { useDispatch, useSelector } from 'react-redux';
+import _ from 'lodash';
+import { useHistory } from 'react-router-dom';
 import { useGoogleLogout } from 'react-google-login';
+
 import googleIcon from '../../assets/icons/google.svg';
 import { logOut } from '../../store/actions/authAction';
+import {
+  patchInCartInCartDB,
+  removeItemFromCart,
+} from '../../store/actions/CartActions';
 
 function Logout() {
   const dispatch = useDispatch();
+  const history = useHistory();
+  const itemsInCart = useSelector(({ carts: { cartItems } }) => cartItems);
+
+  const clearCart = () => {
+    itemsInCart.map((item) => {
+      let intialInCart = _.pick(item, 'inCart');
+      intialInCart.inCart = false;
+      dispatch(patchInCartInCartDB(item.id, intialInCart));
+      return dispatch(removeItemFromCart(item.id));
+    });
+  };
+
   const onLogoutSuccess = (res) => {
     dispatch(logOut());
+    clearCart();
     cogoToast.success('Logged out Successfully ✌');
+    history.push('/');
   };
 
   const onFailure = () => {
