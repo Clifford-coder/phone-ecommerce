@@ -20,6 +20,7 @@ export const fetchProducts = () => {
       });
     } catch (error) {
       console.log('errorrrrr ---', error);
+      dispatch({ type: FETCH_PRODUCTS, payload: null, isLoading: false });
     }
   };
 };
