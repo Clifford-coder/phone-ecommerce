@@ -10,9 +10,14 @@ import productsapi from '../../apis/productsapi';
 export const fetchProducts = () => {
   return async (dispatch) => {
     try {
+      dispatch({ type: FETCH_PRODUCTS, payload: null, isLoading: true });
       const response = await productsapi.get('/products');
       cogoToast.success('Products were succesfully loaded!');
-      dispatch({ type: FETCH_PRODUCTS, payload: response.data });
+      dispatch({
+        type: FETCH_PRODUCTS,
+        payload: response.data,
+        isLoading: false,
+      });
     } catch (error) {
       console.log('errorrrrr ---', error);
     }
